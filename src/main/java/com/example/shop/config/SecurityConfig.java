@@ -11,7 +11,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import java.util.List; // <--- Import indispensable pour la liste des origines CORS
+import java.util.List; // Import indispensable pour la liste des origines CORS
 
 // Configuration principale de la sécurité
 @Configuration
