@@ -11,6 +11,8 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import java.util.List; // <--- Import indispensable pour la liste des origines CORS
+
 // Configuration principale de la sécurité
 @Configuration
 @EnableMethodSecurity(prePostEnabled = true) // permet d'utiliser @PreAuthorize dans les contrôleurs
@@ -25,6 +27,15 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
+                // Configuration CORS
+                .cors(cors -> cors.configurationSource(request -> {
+                    var cfg = new org.springframework.web.cors.CorsConfiguration();
+                    cfg.setAllowedOrigins(List.of("http://localhost:3000", "http://127.0.0.1:5500"));
+                    cfg.setAllowedMethods(List.of("GET","POST","PUT","DELETE","OPTIONS"));
+                    cfg.setAllowedHeaders(List.of("Authorization","Content-Type"));
+                    cfg.setAllowCredentials(true);
+                    return cfg;
+                }))
                 // API stateless avec JWT : pas de CSRF, pas de session
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
